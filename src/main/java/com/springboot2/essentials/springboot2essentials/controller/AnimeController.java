@@ -1,6 +1,6 @@
 package com.springboot2.essentials.springboot2essentials.controller;
 
-import com.springboot2.essentials.springboot2essentials.AnimeService;
+import com.springboot2.essentials.springboot2essentials.service.AnimeService;
 import com.springboot2.essentials.springboot2essentials.domain.Anime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

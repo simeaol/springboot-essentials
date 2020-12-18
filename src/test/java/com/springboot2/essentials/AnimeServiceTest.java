@@ -1,6 +1,6 @@
 package com.springboot2.essentials;
 
-import com.springboot2.essentials.springboot2essentials.AnimeService;
+import com.springboot2.essentials.springboot2essentials.service.AnimeService;
 import com.springboot2.essentials.springboot2essentials.domain.Anime;
 import com.springboot2.essentials.springboot2essentials.repository.AnimeRepository;
 import com.springboot2.essentials.unit.util.AnimeUtil;
