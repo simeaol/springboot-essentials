@@ -46,5 +46,7 @@ public class ReentrantReadWriteLockTest {
             executorService.execute(r2);
         }
 
+        executorService.shutdown();
+
     }
 }

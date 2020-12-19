@@ -33,5 +33,7 @@ public class ReentrantLockTest {
             executorService.execute(r1);
         }
 
+        executorService.shutdown();
+
     }
 }
