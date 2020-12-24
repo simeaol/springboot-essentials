@@ -26,7 +26,7 @@ public class WriteCardController {
 
     public ResponseEntity<String> create(@Valid @NotNull @PathVariable("id") String desiredId,
                                          @RequestBody CardDto cardDto){
-        CreateCardCommand command = new CreateCardCommand(desiredId, cardDto.getExternalId(), cardDto.getName());
+        var command = new CreateCardCommand(desiredId, cardDto.getExternalId(), cardDto.getName());
         serviceBus.execute(command);
 
         return ResponseEntity.status(CREATED).build();
