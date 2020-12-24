@@ -1,11 +1,11 @@
 package com.cqrs.common;
 
-import com.cqrs.write.domain.application.Command;
 import com.cqrs.read.domain.application.Query;
-import com.cqrs.write.domain.application.Handler;
 import com.cqrs.read.domain.application.Resolver;
-import com.cqrs.write.observable.CommandEvent;
 import com.cqrs.read.observable.QueryEvent;
+import com.cqrs.write.domain.application.Command;
+import com.cqrs.write.domain.application.Handler;
+import com.cqrs.write.observable.CommandEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -16,47 +16,52 @@ public class ServiceBus {
     private final ApplicationContext context;
     private final ApplicationEventPublisher publisher;
 
-    public ServiceBus(ApplicationContext context, ApplicationEventPublisher publisher){
+    public ServiceBus(ApplicationContext context, ApplicationEventPublisher publisher) {
         this.context = context;
         this.publisher = publisher;
     }
 
-    public void execute(Command command){
+    public void execute(Command command) {
         CommandEvent event = new CommandEvent(command);
         execute(event);
     }
 
-    public void execute(Query query){
+    public void execute(Query query) {
         QueryEvent event = new QueryEvent(query);
         execute(event);
     }
 
-    public void execute(InternalEvent event){
-        try{
+    public void execute(InternalEvent event) {
+        try {
             run(event);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw e; //Terror-Driven-Development
-        }
-        finally {
+        } finally {
             publisher.publishEvent(event);
         }
     }
 
     private void run(InternalEvent event) {
-        String beanName = event.getSource().getClass().getSimpleName().toLowerCase();
-        switch (event.getType()){
-            case COMMAND:{
-                Handler<Command> handler = (Handler) context.getBean(beanName);
-                handler.handle((Command)event.getSource());
+        String beanName = event.getSource().getClass().getSimpleName().substring(0, 1).toLowerCase()
+                .concat(event.getSource().getClass().getSimpleName().substring(1));
+        switch (event.getType()) {
+            case COMMAND: {
+                var handlerBeanName = beanName.replace("Command", "Handler");
+                Handler<Command> handler = (Handler) context.getBean(handlerBeanName);
+                handler.handle((Command) event.getSource());
                 break;
             }
-            case QUERY:{
-                Resolver<Query> resolver = (Resolver) context.getBean(beanName);
-                resolver.resolve((Query)event.getSource());
+            case QUERY: {
+                var resolverBeanName = beanName.replace("Query", "Resolver");
+                Resolver<Query> resolver = (Resolver) context.getBean(resolverBeanName);
+                resolver.resolve((Query) event.getSource());
                 break;
             }
+            default:
+                throw new ServiceBusInvalidOperationException(
+                        new Error(String.format("Service bus doesn't recognize Object of type %s",
+                                event.getClass().getCanonicalName())));
         }
     }
-
 
 }
