@@ -2,13 +2,12 @@ package com.cqrs.write.adapter.in;
 
 import com.cqrs.common.ServiceBus;
 import com.cqrs.write.domain.application.CreateCardCommand;
+import com.cqrs.write.domain.application.UpdateCardCommand;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -24,6 +23,7 @@ public class WriteCardController {
         this.serviceBus = serviceBus;
     }
 
+    @PostMapping("/{id}")
     public ResponseEntity<String> create(@Valid @NotNull @PathVariable("id") String desiredId,
                                          @RequestBody CardDto cardDto){
         var command = new CreateCardCommand(desiredId, cardDto.getExternalId(), cardDto.getName());
@@ -31,6 +31,17 @@ public class WriteCardController {
 
         return ResponseEntity.status(CREATED).build();
     }
+
+    @PutMapping
+    public ResponseEntity<Void> update(@NotNull @PathVariable("id") String externalId, @NotNull @RequestBody CardDto cardDto){
+        Assert.notNull(externalId, "ID cannot be null");
+
+        var command = new UpdateCardCommand(externalId, cardDto);
+        serviceBus.execute(command);
+        return ResponseEntity.ok().build();
+    }
+
+
 
     @Getter
     public class CardDto{

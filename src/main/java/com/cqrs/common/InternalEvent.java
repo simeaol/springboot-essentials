@@ -18,6 +18,10 @@ public abstract class InternalEvent<T> {
         return exception;
     }
 
+    public void setException(Exception e){
+        exception = e;
+    }
+
 
 
     public enum Type{

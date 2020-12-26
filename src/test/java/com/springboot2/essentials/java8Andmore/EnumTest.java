@@ -58,6 +58,7 @@ public class EnumTest {
     }
 
     public class PriceService {
+
         public int computePrice(Type type, int days){
             return type.priceAlgo.apply(this, days);
         }

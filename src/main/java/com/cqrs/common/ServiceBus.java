@@ -35,6 +35,7 @@ public class ServiceBus {
         try {
             run(event);
         } catch (Exception e) {
+            event.setException(e);
             throw e; //Terror-Driven-Development
         } finally {
             publisher.publishEvent(event);
