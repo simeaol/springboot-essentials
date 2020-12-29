@@ -8,11 +8,31 @@
         <version>2.4.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.springboot2.essentials</groupId>
     <artifactId>springboot2-essentials</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>springboot2-essentials</name>
     <description>SpringBoot2 essentials test learning</description>
+
+    <organization>
+        <name>Simon CORP</name>
+        <url>https://simeao.com</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>slamine</id>
+            <name>Simeao David Lamine</name>
+        </developer>
+    </developers>
+    <inceptionYear>2020</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>The Apache, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
 
     <properties>
         <java.version>11</java.version>
@@ -62,6 +82,23 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>15</source>
+                    <target>15</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>15</source>
+                    <target>15</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
+                </configuration>
             </plugin>
         </plugins>
     </build>
