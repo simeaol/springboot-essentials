@@ -1,4 +1,4 @@
-package com.springboot2.essentials.java8Andmore;
+package java8Andmore;
 
 import java.util.function.BiFunction;
 
@@ -74,6 +74,8 @@ public class EnumTest {
         int computeChildren(int days){
             return 1 + days;
         }
+
+        private final native void aim();
 
     }
 

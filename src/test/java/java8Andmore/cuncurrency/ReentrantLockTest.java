@@ -1,8 +1,6 @@
-package com.springboot2.essentials.java8Andmore.cuncurrency;
+package java8Andmore.cuncurrency;
 
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

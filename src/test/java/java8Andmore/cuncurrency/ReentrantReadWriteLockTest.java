@@ -1,11 +1,10 @@
-package com.springboot2.essentials.java8Andmore.cuncurrency;
+package java8Andmore.cuncurrency;
 
 import lombok.extern.log4j.Log4j2;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Log4j2

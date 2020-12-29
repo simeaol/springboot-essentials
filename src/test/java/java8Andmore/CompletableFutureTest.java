@@ -1,4 +1,4 @@
-package com.springboot2.essentials.java8Andmore;
+package java8Andmore;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -6,7 +6,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.*;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class CompletableFutureTest {
@@ -39,7 +42,7 @@ public class CompletableFutureTest {
     @DisplayName("Completable Future with delay")
     public void testCFutureWithDelay(){
         CompletableFuture<Optional<String>> cf = CompletableFuture.supplyAsync(() -> {
-            //Do mething
+            //Do something
             return Optional.of("Executed with delay");
         }, CompletableFuture.delayedExecutor(5, TimeUnit.SECONDS));
 
@@ -64,16 +67,16 @@ public class CompletableFutureTest {
             }
         }).start();
         completableFuture.exceptionally(ex -> {
-            System.out.println(ex.getMessage());
+            log.error(ex.getMessage());
             return "Default value on exception. " + ex.getCause();
         });
-        completableFuture.thenAccept(System.out::println);
+        completableFuture.thenAccept(log::info);
         completableFuture.handle((ctx, ex) -> {
             if(ex != null){
-                System.out.println("Complete with error. " + ex);
+               log.error("Complete with error. " + ex);
                 return "Completed";
             }else{
-                System.out.println("Complete with success. result="+ctx);
+                log.info("Complete with success. result="+ctx);
             }
             return "Default";
         });
@@ -89,12 +92,12 @@ public class CompletableFutureTest {
                 String value = CompletableFutureTest.dummyDbCall();
                 c1.complete(value);
             } catch (RuntimeException e) {
-                System.out.println(e.getMessage());
+               log.error(e.getMessage());
                 c1.completeExceptionally(e);
             }
         });
         c1.exceptionally(d -> "ERROR" + d.getCause())
-                .thenAccept(System.out::println);
+                .thenAccept(log::info);
 
     }
 
@@ -104,7 +107,7 @@ public class CompletableFutureTest {
         CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(CompletableFutureTest::dummyDbCall);
         completableFuture.exceptionally(ex -> "Default value in case of error. " + ex.getCause())
                 .thenApply(r -> r.toLowerCase())
-                .thenAccept(System.out::println);
+                .thenAccept(log::info);
     }
 
     private static String dummyDbCall(){
@@ -112,7 +115,7 @@ public class CompletableFutureTest {
             Thread.sleep(1_000);
             return "OK";
         } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
             return "NOK";
         }
     }
@@ -166,6 +169,7 @@ public class CompletableFutureTest {
         var anyOf = CompletableFuture.anyOf(cf1, cf2, cf3, cf4)
                 .thenRunAsync(() -> log.debug("thenRunAsync"))
                 .thenRunAsync(() -> {
+                    log.info("Second then runAsync");
                     //Do something
                 });
         cf1.complete("Cf1");

@@ -1,4 +1,4 @@
-package com.springboot2.essentials.java8Andmore;
+package java8Andmore;
 
 import java.util.function.Function;
 

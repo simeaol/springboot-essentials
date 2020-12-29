@@ -1,4 +1,4 @@
-package com.springboot2.essentials.java8Andmore.cuncurrency;
+package java8Andmore.cuncurrency;
 
 import lombok.extern.slf4j.Slf4j;
 

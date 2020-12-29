@@ -1,11 +1,10 @@
-package com.springboot2.essentials.java8Andmore.cuncurrency;
+package java8Andmore.cuncurrency;
 
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class SynchronousQueueTest {

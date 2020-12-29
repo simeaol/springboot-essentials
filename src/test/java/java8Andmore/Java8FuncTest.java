@@ -1,7 +1,11 @@
-package com.springboot2.essentials.java8Andmore;
+package java8Andmore;
 
 import com.springboot2.essentials.springboot2essentials.domain.Anime;
-import org.junit.jupiter.api.Test;
+import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledOnJre;
+import org.junit.jupiter.api.condition.JRE;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
@@ -22,6 +26,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @SpringBootTest
+@Tag("unit-test")
+@Log4j2
 public class Java8FuncTest {
 
     static Function<Integer, Integer> sum = v1 -> v1 + 1;
@@ -30,8 +36,28 @@ public class Java8FuncTest {
 
     List<List<String>> list= new ArrayList<>();
 
+    @BeforeEach
+    static void setUp(){
+        log.info("Before each");
+    }
+
+    @BeforeAll
+    static void beforeAll(){
+        log.info("Before all - BeforeClass");
+    }
+
+    @AfterAll
+    static void afterAll(){
+        log.info("After all - AfterClass");
+    }
+
+    @AfterEach
+    static void tearDown(){
+        log.info("After each");
+    }
+
     @Test
-    public void testSum(){
+    void testSum(){
 
         Integer apply = sum.andThen(zero).apply(5);
         System.out.println(apply);
@@ -39,7 +65,7 @@ public class Java8FuncTest {
     }
 
     @Test
-    public void testOrElse(){
+    void testOrElse(){
         Optional<String> string = Optional.of("FOO");
         string
                 .map(this::runIfExist)
@@ -47,7 +73,7 @@ public class Java8FuncTest {
                 //orElseGet(() => this::runIfNotExist) //Use the alternatives flow
     }
 
-    private String runIfExist(String s) {
+    String runIfExist(String s) {
         System.out.println("Only Run if Exist");
         return s;
     }
@@ -58,7 +84,7 @@ public class Java8FuncTest {
     }
 
     @Test
-    public void testWrapperFunc(){
+    void testWrapperFunc(){
         List.of(Integer.valueOf(null), Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3))
                 .stream()
                 .map(wrap(e -> doSomething(e)))//stream is stopped at all whenever RuntimeException is thrown
@@ -86,14 +112,14 @@ public class Java8FuncTest {
     }
 
     @Test
-    public void readFile() throws IOException {
+    void readFile() throws IOException {
         var path = Paths.get("application.yml");
         var file = Files.readString(path, Charset.defaultCharset());
 
     }
 
     @Test
-    public void testHttpClient() throws IOException, InterruptedException {
+    void testHttpClient() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(1))
                 .version(HttpClient.Version.HTTP_2)
@@ -114,7 +140,8 @@ public class Java8FuncTest {
 
     //switch statement Supported only in Java12
     @Test
-    public void testSwitchCaseJava12(){
+    @EnabledOnJre(JRE.JAVA_12)
+    void testSwitchCaseJava12(){
         int i = 0;
         String result = switch (i){
                 case 0 -> break "Zero";
@@ -124,7 +151,7 @@ public class Java8FuncTest {
 
     //break was replaced by yield on Java13. yield is not keyword in jav. It's just used in switch statement. this means you don't need to write them in explicit.
     @Test
-    public void testSwitchCaseJava13(){
+    void testSwitchCaseJava13(){
         int i = 0;
         String result = switch (i){
             case 0 -> yield "Zero"; //in java13 or higher: case 0 -> "Zero";
@@ -133,7 +160,8 @@ public class Java8FuncTest {
     }
 
     @Test
-    public void testTextBlockJava13(){
+    @EnabledOnJre(JRE.JAVA_14)
+    void testTextBlockJava13(){
         String html = """
                       <html>
                         <head>
@@ -149,11 +177,11 @@ public class Java8FuncTest {
                         "name": "Simeao",
                         "race": "black",
                         "knowJava" : true
-                      """
+                      """;
     }
 
     //Java14 pattern matching
-    public void testPatternMatching(){
+    void testPatternMatching(){
         Object obj = new Anime();
 
         if(obj instanceof Anime anime){
@@ -165,8 +193,26 @@ public class Java8FuncTest {
     }
 
     //java 14-15
-    public record Client(String name, String email){//record remove boilerplate and provide by default all getters and setters, hashcode, equals, toString. so you don't need to implement them
+    public record Client(String name, String email){}//record remove boilerplate and provide by default all getters and setters, hashcode, equals, toString. so you don't need to implement them
 
+
+
+    @Test
+    @RepeatedTest(5) //Will execute this test 5 times
+    @ParameterizedTest(name = "name")
+    @Disabled
+    void testOverloadMethodCasting(){
+        equal(null, (String)null);
+    }
+
+
+    private boolean equal(String a, Integer b){
+        if(a != null && a.equals(b)) return true;
+        return false;
+    }
+    private boolean equal(String a, String b){
+        if(a != null && a.equals(b)) return true;
+        return false;
     }
 
 }
