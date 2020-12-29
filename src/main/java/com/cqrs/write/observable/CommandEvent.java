@@ -1,9 +1,9 @@
 package com.cqrs.write.observable;
 
 import com.cqrs.write.domain.application.Command;
-import com.cqrs.common.InternalEvent;
+import com.cqrs.common.AbstractInternalEvent;
 
-public class CommandEvent extends InternalEvent<Command> {
+public class CommandEvent extends AbstractInternalEvent<Command> {
     public CommandEvent(Command command){
         super(command);
     }

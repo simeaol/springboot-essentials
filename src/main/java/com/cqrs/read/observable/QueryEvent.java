@@ -1,9 +1,9 @@
 package com.cqrs.read.observable;
 
 import com.cqrs.read.domain.application.Query;
-import com.cqrs.common.InternalEvent;
+import com.cqrs.common.AbstractInternalEvent;
 
-public class QueryEvent extends InternalEvent<Query> {
+public class QueryEvent extends AbstractInternalEvent<Query> {
 
     public QueryEvent(Query query){
         super(query);

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 public class LogListener {
 
     @Async //Make onEvent to be executed in separated Thread without blocking the trigger action
-    @EventListener(InternalEvent.class) //if class don't specified, all events will be logged
-    void onEvent(InternalEvent event){
+    @EventListener(AbstractInternalEvent.class) //if class don't specified, all events will be logged
+    void onEvent(AbstractInternalEvent event){
         if(event.getSource() instanceof CardNotFoundException){
             log.warn(((CardNotFoundException) event.getSource()).getMessage());
         }

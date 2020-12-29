@@ -1,10 +1,10 @@
 package com.cqrs.common;
 
-public abstract class InternalEvent<T> {
+public abstract class AbstractInternalEvent<T> {
     private T t;
     private Exception exception;
 
-    public InternalEvent(T t){
+    public AbstractInternalEvent(T t){
         this.t = t;
     }
 

@@ -31,7 +31,7 @@ public class ServiceBus {
         execute(event);
     }
 
-    public void execute(InternalEvent event) {
+    public void execute(AbstractInternalEvent event) {
         try {
             run(event);
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class ServiceBus {
         }
     }
 
-    private void run(InternalEvent event) {
+    private void run(AbstractInternalEvent event) {
         String beanName = event.getSource().getClass().getSimpleName().substring(0, 1).toLowerCase()
                 .concat(event.getSource().getClass().getSimpleName().substring(1));
         switch (event.getType()) {
