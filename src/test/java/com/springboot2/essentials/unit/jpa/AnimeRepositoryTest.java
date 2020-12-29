@@ -3,6 +3,7 @@ package com.springboot2.essentials.unit.jpa;
 import com.springboot2.essentials.springboot2essentials.domain.Anime;
 import com.springboot2.essentials.springboot2essentials.repository.AnimeRepository;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.Assumptions;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -119,5 +120,13 @@ public class AnimeRepositoryTest {
         return Anime.builder()
                 .name("Rick and Marty")
                 .build();
+    }
+
+    @Test
+    @DisplayName("Assumptions test. https://junit.org/junit5/docs/5.0.0/api/org/junit/jupiter/api/Assumptions.html")
+    //"In direct contrast to failed assertions, failed assumptions do not result in a test failure; rather,
+        // a failed assumption results in a test being aborted.
+    void testAssumptions(){
+        Assumptions.assumeThat(Boolean.TRUE).isTrue();
     }
 }
