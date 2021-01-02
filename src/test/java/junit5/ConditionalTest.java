@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.*;
 
 @DisplayName("Test Conditional feature available on JUnit5")
-public class ConditionalTest {
+class ConditionalTest {
 
     @EnabledOnJre(JRE.JAVA_13) //https://junit.org/junit5/docs/current/user-guide/#writing-tests-conditional-execution
     @EnabledOnOs(OS.LINUX)

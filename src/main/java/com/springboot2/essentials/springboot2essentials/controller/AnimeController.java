@@ -7,9 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("animes")
@@ -29,11 +31,13 @@ public class AnimeController {
 
     @PostMapping
     public ResponseEntity<Anime> save(Anime anime){
+        Objects.requireNonNull(anime, "Anime cannot be null");
         return ResponseEntity.status(HttpStatus.CREATED).body(animeService.save(anime));
     }
 
     @PutMapping
     public ResponseEntity<Anime> update(Anime anime, long id){
+        Assert.notNull(anime, "Anime cannot be null");
         return ResponseEntity.ok().body(animeService.update(anime, id));
     }
 
@@ -51,6 +55,7 @@ public class AnimeController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Anime>> findByName(@RequestParam("name") String name){
+        Assert.notNull(name, "name cannot be null");
         return ResponseEntity.ok(animeService.findByName(name));
     }
 

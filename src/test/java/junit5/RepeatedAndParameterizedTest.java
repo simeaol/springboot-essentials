@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 /**
  * Author: slamine
  */
-public class RepeatedAndParameterizedTest {
+class RepeatedAndParameterizedTest {
 
     @DisplayName("MyRepeatedTest")
     @RepeatedTest(value = 5, name = "{displayName}: {currentRepetition} of {totalRepetitions}") //display-name will be printed out on test cases with the name-values defined into brackets
@@ -42,7 +42,7 @@ public class RepeatedAndParameterizedTest {
     }
 
     enum EnumType{
-        TYPE_1,
+        TYPE_1, = true
         TYPE_2,
         Type_3
     }

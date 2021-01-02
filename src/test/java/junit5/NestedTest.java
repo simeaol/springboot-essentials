@@ -3,7 +3,7 @@ package junit5;
 import org.junit.jupiter.api.*;
 
 @DisplayName("Nested Test")
-public class NestedTest {
+class NestedTest {
 
     String service;
 

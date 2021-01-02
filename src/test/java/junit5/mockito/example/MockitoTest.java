@@ -3,7 +3,6 @@ package junit5.mockito.example;
 import com.springboot2.essentials.springboot2essentials.domain.Anime;
 import com.springboot2.essentials.springboot2essentials.repository.AnimeRepository;
 import com.springboot2.essentials.springboot2essentials.service.AnimeService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -13,7 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -83,5 +83,32 @@ class MockitoTest {
 
         then(mapMock).shouldHaveNoInteractions();
 
+    }
+
+    @Test
+    void testDoThrow(){
+        doThrow(new RuntimeException("boom")).when(animeRepository.findById(any()));
+
+        assertThrows(RuntimeException.class, () -> animeRepository.findById(any()));
+
+        verify(animeRepository).findById(any());
+    }
+
+    @Test
+    void testGetByKey(){
+        given(animeRepository.findById(1L)).willThrow(new RuntimeException("boom"));
+
+        assertThrows(RuntimeException.class, () -> animeRepository.findById(1L));
+
+        then(animeRepository).should().findById(1L);
+    }
+
+    @Test
+    void testDelete(){
+        willThrow(new RuntimeException("boom")).given(animeRepository).delete(any());
+
+        assertThrows(RuntimeException.class, () -> animeRepository.delete(any()));
+
+        then(animeRepository).should().delete(any());
     }
 }
